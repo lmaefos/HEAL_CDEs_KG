@@ -38,18 +38,18 @@ st.title('Interactive Knowledge Network of HEAL Core CDEs')
 
 # Add description before presenting the knowledge graph
 st.markdown("""
-This dynamic tool presents a knowledge graph and is designed to help researchers understand [common data elements (CDEs), particularly those that pertain to HEAL](https://heal.nih.gov/data/common-data-elements). The tool allows researchers to explore relationships among CDEs and identify patterns in their use across studies.
+This dynamic tool presents a knowledge graph and is designed to help researchers understand [common data elements (CDEs), particularly those that pertain to HEAL Pain Research](https://heal.nih.gov/data/common-data-elements). The tool allows users to explore relationships among CDEs and identify patterns in their use across studies.
             
 ## Understanding Nodes and Edges
 
-- A **Node** is, essentially, a *noun*. It represents the entities in the graph, such as "Core CDE Measures," "Domain," "Questionnaire," etc. Each node can have various properties like size, color, label, etc.
-- An **Edge** is, essentially, a *verb*. It represents the relationships or connections between the nodes, such as a core CDE measure being associated with a particular domain or questionnaire.
+- **Nodes** (aka vertices) are the fundamental units in a graph. They represent entities or objects. Nodes can have properties like size, color, label, etc., which help in identifying or categorizing them. Each node can have various properties like size, color, label, etc.
+- **Edges** (aka links) represent the connections or relationships between nodes. They define how nodes are related, such as a core CDE measure being associated with a particular domain or questionnaire.
 
 ## Understanding Pathways
-A **Pathway** is, essentially, a *chain*. It represents a sequence of events, influences, or descriptions linking nodes through their edges. Different pathways indicate different patterns, and there can be parallel pathways. Think of a pathway as a series of edges that connect a sequence of nodes, representing a more complex sequence of relationships or interactions.
+A **Pathway** is a sequence of nodes connected by edges, representing a specific route or series of connections in the graph. Pathways can illustrate different patterns or sequences of relationships. There can be multiple pathways showing various possible routes or sequences between nodes.
 A pathway might show how a "Core CDE Measure" leads to a "Domain," which then connects to a "Questionnaire," forming a sequence.
 
-- "Core CDE Measure" --> "Domain" --> "Questionnaire"
+- "<span style="color:#4b0082;">Core CDE Measure</span>" --> "<span style="color:#dda0dd;">Domain</span>" --> "<span style="color:#ff1493;">Questionnaire</span>"
 
 ## Graph Key 
 
@@ -81,10 +81,11 @@ A pathway might show how a "Core CDE Measure" leads to a "Domain," which then co
 
 ### Edges Colors
   - Edges inherit the color of the nodes they connect. For example, an edge connecting a "Core CDE Measures" node (<span style="color:#4b0082;">&#x25CF;</span>) to a "Domain" node (<span style="color:#dda0dd;">⬮</span>) will inherit the color properties **_from_** the connected nodes.
-  - For example, if you select the questionnaire (<span style="color:#ff1493;">&#x25A0;</span>), 'PROMIS', you will see:
-    - Dark purple edges: connected to 'Core CDE Measures' nodes that are related to 'PROMIS'
-    - Light purple edges: connect 'PROMIS' to nodes categorized under 'Domain'
-    - Dark pink edges: connect 'PROMIS' to other nodes categorized under 'Questionnaire'
+    - For example, if you select the questionnaire (<span style="color:#ff1493;">&#x25A0;</span>), 'PROMIS', you will see:
+      - <span style="color: #4b0082;">Dark purple</span> edges: These connect to 'Core CDE Measures' nodes related to 'PROMIS'.
+      - <span style="color: #dda0dd;">Light purple</span> edges: These connect 'PROMIS' to nodes categorized under 'Domain'.
+      - <span style="color: #ff1493;">Dark pink</span> edges: These connect 'PROMIS' to other nodes categorized under 'Questionnaire'.
+  - Study Name and PI Name are represented as text without associated shapes or colors, thus they have the default <span style="color: #0000ff;">blue</span> edges.
 
 ## Explore!
 This interactive knowledge graph is designed to let researchers highlight and explore individual nodes and their connections. Users can search and navigate through the graph using simple properties like color, shape, and size, easing identification of patterns, relationships, and focal points of interest.
@@ -154,10 +155,10 @@ def create_knowledge_graph(data, columns):
           "updateInterval": 100
         },
         "barnesHut": {
-          "gravitationalConstant": -100000,
-          "centralGravity": 0.02,
-          "springLength": 1000,
-          "springConstant": 0.02,
+          "gravitationalConstant": -155000,
+          "centralGravity": 0.007,
+          "springLength": 1500,
+          "springConstant": 0.0095,
           "damping": 0.3
         }
       },
@@ -210,16 +211,10 @@ except Exception as e:
 st.markdown("""
 ### Selecting a Node
 
-- **Select a Node by ID**:
+- **Select a Node by ID**: top row of filtering feature
   - You can use the dropdown menu labeled "Select a Node by ID" to choose a specific node. This will highlight the node and its connections, helping you focus on a particular part of the graph. 
   - See [Guide to Possible Selection Choices below](#guide-to-possible-selection-choices)
-
-- **Select a Network Item (Node)**:
-  - When you select "node" from the "Select a network item" dropdown, you can then choose a property and value(s) to filter nodes based on those properties. For example, you might filter nodes to only show those with a specific label or color.
-
-- **Node Properties**:
-  - Properties you might filter on include label, color, size, etc.
-  - Example: To highlight nodes with a specific research focus area, you can select label and type the specific focus area you're interested in.
+  - See the table below for the filter property cheat sheet.
 
 ### Selecting an Edge
 
@@ -240,18 +235,31 @@ st.markdown("""
 
 ### Practical Use Case
 
-- Highlight Specific **Nodes**: let's say you want to highlight nodes related to a specific institution. You would:
+- Highlight Specific **Nodes**: let's say you want to highlight relationships between all research programs and CDEs. You would:
   - Select "node" from "Select a network item".
-  - Choose label from "Select a property".
-  - Enter the institution name in "Select value(s)" and click "Filter".
+  - Choose `shape` from "Select a property".
+  - Enter 'Triangle' and 'Dot' in "Select value(s)" and click "Filter".
 
 - Highlight Specific **Edges**: to highlight edges to focus on the pathway:
   - Select "edge" from "Select a network item".
   - Choose 'from' or 'to' in "Select a property".
-  - As a general rule-of-thumb, selecting:
-    - '**to**' allows you to see overlapping CDE use between _research programs_ by selecting the HEAL Research Program names in the 'Select value(s)' section.
-    - '**from**' allows you to see overlapping CDE use between _HEAL study name_ by selecting specific study names in the 'Select value(s)' section. 
+  - See the table below for the filter property cheat sheet.
+ 
 """)
+
+# Data for the table
+data = {
+    "Network Item": ["Node", "Node", "Node", "Node", "Node", "Node", "Node", "Edge", "Edge", "Edge"],
+    "Property": ["color", "font", "id", "label", "shape", "shape", "shape", "from", "to", "id"],
+    "Possible Selections": ["ignore", "ignore", "Any unique values", "ignore", "Dot - CDEs", "Ellipse - Domain", "Triangle - Res. prog.", "Study name, Research program, CDE name, Domain, Questionnaire", "Research program, PI Name, Study Name, Domain, Questionnaire", "ignore"],
+    "Description": ["Not human readable", "Not human readable", "Expansion of the ‘Select Node’, slowly building connections", "Glitchy - do not use", "Based on selected shapes, will show relationship between shapes", "", "", "Study name alone will show connection to PI Name (1 edge)\nRes. prog alone will show connection to study name and PI name (2 edges)\nCDE name alone will show connections to research programs, study names, domain, and questionnaire (4 edges)\nDomain alone will show connections to research programs, study and PI name (4 edges)\nQuestionnaire alone will show connections to domain, research programs, study and PI name (4 edges)", "Research program alone will show connections to CDEs, Questionnaires, and Domain (3 edges)\nPI Names alone will show connections to study name, CDEs, Domain, Questionnaire, Research Program, Questionnaire (6 edges)\nStudy name alone will show connections to research program, CDEs, domain, questionnaire (4 edges)\nDomain alone will show a connection to CDEs (1 edge)\nQuestionnaire alone will show connections to domain and CDEs (2 edges)", "Not human readable"]
+}
+
+# Create a DataFrame
+df = pd.DataFrame(data)
+
+# Display the table
+st.table(df)
 
 # Generate and display the guide table for possible selection choices
 unique_values = {column: descriptors_data[column].unique().tolist() for column in descriptors_data.columns}
